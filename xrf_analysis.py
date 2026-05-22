@@ -126,7 +126,7 @@ def merge_dataset(folder_specs):
 
 
 # Shared color scale across all datasets
-GLOBAL_VMIN = 0
+GLOBAL_VMIN = 15
 GLOBAL_VMAX = 30
 GLOBAL_NORM = mcolors.Normalize(vmin=GLOBAL_VMIN, vmax=GLOBAL_VMAX)
 
@@ -157,7 +157,7 @@ def apply_blackout(grid, dataset_name):
 
 # ── Plotter ────────────────────────────────────────────────────────────────────
 def plot_heatmap(values, dataset_name, output_dir):
-    grid = apply_blackout(values, dataset_name)
+    grid = apply_blackout(values, dataset_name).T
 
     fig, ax = plt.subplots(figsize=(6, 6))
     im = ax.imshow(
@@ -167,12 +167,12 @@ def plot_heatmap(values, dataset_name, output_dir):
         norm=GLOBAL_NORM,
     )
     ax.set_title(f"V Atomic % - {dataset_name}", fontsize=12, pad=10)
-    ax.set_xlabel("Y position (mm)")
-    ax.set_ylabel("X position (mm)")
-    ax.set_xticks(range(GRID_COLS))
-    ax.set_xticklabels(Y_COORDS)
-    ax.set_yticks(range(GRID_ROWS))
-    ax.set_yticklabels(X_COORDS)
+    ax.set_xlabel("X position (mm)")
+    ax.set_ylabel("Y position (mm)")
+    ax.set_xticks(range(GRID_ROWS))
+    ax.set_xticklabels(X_COORDS)
+    ax.set_yticks(range(GRID_COLS))
+    ax.set_yticklabels(Y_COORDS)
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label("V Atomic %")

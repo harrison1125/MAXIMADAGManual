@@ -128,13 +128,13 @@ def merge_dataset(folder_specs):
 
 # ── Color scale ────────────────────────────────────────────────────────────────
 # Set these once you know the expected range of a_A_avg values.
-GLOBAL_VMIN = 3.0
+GLOBAL_VMIN = 3.2
 GLOBAL_VMAX = 3.6
 GLOBAL_NORM = mcolors.Normalize(vmin=GLOBAL_VMIN, vmax=GLOBAL_VMAX)
 
 # Blackout threshold: mask cells more than 0.3 away from 3.3 Å
 BLACKOUT_CENTER = 3.3
-BLACKOUT_DELTA  = 0.3
+BLACKOUT_DELTA  = 0.2
 BLACKOUT_MIN    = BLACKOUT_CENTER - BLACKOUT_DELTA  # 3.0
 BLACKOUT_MAX    = BLACKOUT_CENTER + BLACKOUT_DELTA  # 3.6
 
@@ -155,7 +155,7 @@ def apply_blackout(grid, dataset_name):
 
 # ── Plotter ────────────────────────────────────────────────────────────────────
 def plot_heatmap(values, dataset_name, output_dir):
-    grid = apply_blackout(values, dataset_name)
+    grid = apply_blackout(values, dataset_name).T
 
     fig, ax = plt.subplots(figsize=(6, 6))
     im = ax.imshow(
@@ -165,12 +165,12 @@ def plot_heatmap(values, dataset_name, output_dir):
         norm=GLOBAL_NORM,
     )
     ax.set_title(f"Lattice Parameter - {dataset_name}", fontsize=12, pad=10)
-    ax.set_xlabel("Y position (mm)")
-    ax.set_ylabel("X position (mm)")
-    ax.set_xticks(range(GRID_COLS))
-    ax.set_xticklabels(Y_COORDS)
-    ax.set_yticks(range(GRID_ROWS))
-    ax.set_yticklabels(X_COORDS)
+    ax.set_xlabel("X position (mm)")
+    ax.set_ylabel("Y position (mm)")
+    ax.set_xticks(range(GRID_ROWS))
+    ax.set_xticklabels(X_COORDS)
+    ax.set_yticks(range(GRID_COLS))
+    ax.set_yticklabels(Y_COORDS)
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label(r"$a$ ($\AA$)")
@@ -189,15 +189,15 @@ def plot_comparison(all_values, output_dir):
     fig.suptitle("Lattice Parameter $a$ - All Datasets", fontsize=14)
 
     for ax, (name, values) in zip(axes.flat, all_values.items()):
-        grid = apply_blackout(values, name)
+        grid = apply_blackout(values, name).T
         im = ax.imshow(grid, cmap=HOT_BLACK, aspect="equal", norm=GLOBAL_NORM)
         ax.set_title(name, fontsize=10)
-        ax.set_xlabel("Y position (mm)")
-        ax.set_ylabel("X position (mm)")
-        ax.set_xticks(range(GRID_COLS))
-        ax.set_xticklabels(Y_COORDS)
-        ax.set_yticks(range(GRID_ROWS))
-        ax.set_yticklabels(X_COORDS)
+        ax.set_xlabel("X position (mm)")
+        ax.set_ylabel("Y position (mm)")
+        ax.set_xticks(range(GRID_ROWS))
+        ax.set_xticklabels(X_COORDS)
+        ax.set_yticks(range(GRID_COLS))
+        ax.set_yticklabels(Y_COORDS)
 
     # Single shared colorbar
     fig.subplots_adjust(right=0.85)

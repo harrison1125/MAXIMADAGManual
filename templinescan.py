@@ -174,7 +174,7 @@ def build_xrd_heatmap(folder_specs, axis, fixed_idx):
     per_mins, global_max = [], -np.inf
     for entry in raw_log:
         if entry is None:
-continue
+            continue
         q, log_i = entry
         mask = (q >= Q_MIN) & (q <= Q_MAX)
         if mask.sum() == 0:
@@ -199,11 +199,11 @@ continue
 
 
 # ── Plot ───────────────────────────────────────────────────────────────────────
-def plot_combined(dataset_name, xrf_line, lat_line, xrd_heatmap, q_grid,
+def plot_combined(dataset_name, xrf_line, xrd_heatmap, q_grid,
                   positions, pos_label, scan_label, output_dir):
     """
     Two-panel figure:
-      Left:  V Atomic % + lattice parameter a (twin x-axes)
+      Left:  V Atomic % line scan
       Right: XRD heatmap (Q on x, position on y, shared y-axis)
     """
     fig = plt.figure(figsize=(10, 6))
@@ -212,24 +212,13 @@ def plot_combined(dataset_name, xrf_line, lat_line, xrd_heatmap, q_grid,
     pos    = np.array(positions)
     p_half = (pos[1] - pos[0]) / 2
 
-    # ── Panel 1: XRF + lattice ─────────────────────────────────────────────────
+    # ── Panel 1: XRF ───────────────────────────────────────────────────────────
     ax_xrf = fig.add_subplot(gs[0])
-    ax_xrf.plot(xrf_line, pos, marker='o', linestyle='-',
-                color='black', label='V (at%)')
+    ax_xrf.plot(xrf_line, pos, marker='o', linestyle='-', color='black')
     ax_xrf.set_xlabel("V Atomic %")
     ax_xrf.set_ylabel(f"{pos_label} position (mm)")
     ax_xrf.set_yticks(pos)
     ax_xrf.set_ylim(pos[0] - p_half, pos[-1] + p_half)
-
-    ax_lat = ax_xrf.twiny()
-    ax_lat.plot(lat_line, pos, marker='s', linestyle='-',
-                color='#56B4E9', label=r'$a$ ($\AA$)')
-    ax_lat.set_xlabel(r"$a$ ($\AA$)")
-
-    lines1, labels1 = ax_xrf.get_legend_handles_labels()
-    lines2, labels2 = ax_lat.get_legend_handles_labels()
-    ax_xrf.legend(lines1 + lines2, labels1 + labels2, loc='best',
-                  fontsize=9, frameon=False)
 
     # ── Panel 2: XRD heatmap ───────────────────────────────────────────────────
     ax_xrd = fig.add_subplot(gs[1], sharey=ax_xrf)
@@ -274,15 +263,12 @@ def main():
             print(f"\n  Processing: {dataset_name}")
 
             xrf_grid = build_grid(folder_specs, load_xrf)
-            lat_grid = build_grid(folder_specs, load_lattice)
             xrd_heatmap, q_grid = build_xrd_heatmap(folder_specs, axis, fixed_idx)
 
-            # Extract line and trim to interior points 1-9
-            xrf_line = (xrf_grid[fixed_idx, :] if axis == 'row' else xrf_grid[:, fixed_idx])[1:10]
-            lat_line = (lat_grid[fixed_idx, :] if axis == 'row' else lat_grid[:, fixed_idx])[1:10]
-            xrd_heatmap = xrd_heatmap[1:10, :]  # trim first and last scan point rows
+            xrf_line    = (xrf_grid[fixed_idx, :] if axis == 'row' else xrf_grid[:, fixed_idx])[1:10]
+            xrd_heatmap = xrd_heatmap[1:10, :]
 
-            plot_combined(dataset_name, xrf_line, lat_line, xrd_heatmap, q_grid,
+            plot_combined(dataset_name, xrf_line, xrd_heatmap, q_grid,
                           positions, pos_label, scan_label, output_dir)
 
     print(f"\nDone. Outputs in: {output_dir}")
@@ -290,4 +276,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

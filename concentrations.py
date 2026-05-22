@@ -8,6 +8,7 @@ import os
 import re
 import csv
 import matplotlib.pyplot as plt
+import Inputs
 
 
 def calculate_atomic_percent_ti(ti_mass_fraction, cu_mass_fraction):
@@ -48,7 +49,7 @@ def calculate_atomic_percent_ti(ti_mass_fraction, cu_mass_fraction):
 
 
 # === Root directory to search ===
-root_dir = '/Users/hpark108/Downloads/Resources (2)'
+root_dir = Inputs.root_dir
 
 # Regex pattern to extract scan point, Ti, and Cu mass fractions
 pattern = re.compile(
