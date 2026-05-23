@@ -12,6 +12,6 @@ poni_file : str
 config_path : str
     Path to configuration file for XRF. Generated through PYMCA.
 """
-root_dir = '/Users/hpark108/Downloads/Resources 2'
-poni_file = '/Users/hpark108/Desktop/Piyush Rohit Solutionized CuTi Final/Piyush Rohit Solutionized CuTi Final.poni'
+root_dir = '/Users/hpark108/Desktop/Piyush Rohit Solutionized CuTi Final/Day 2 Batch 2'
+poni_file = '/Users/hpark108/Desktop/Piyush Rohit Solutionized CuTi Final/Day 2 Batch 2/JHACRD00011_69d3cc54b1ba2b821d691427_0_1340_2026-05-21_21-11-13/JHACRD00011_69d3cc54b1ba2b821d691427_0_1340_2026-05-21_21-11-13.poni'
 config_path = '/Users/hpark108/Desktop/Piyush Rohit Solutionized CuTi Final/Piyush Rohit Solutionized CuTi Final.cfg'

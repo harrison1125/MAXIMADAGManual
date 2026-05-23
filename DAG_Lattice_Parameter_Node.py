@@ -20,7 +20,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-
 # =============================================================================
 # USER CONFIGURATION
 # =============================================================================
@@ -29,20 +28,19 @@ FOLDER_PATHS: List[str] = [
     "/Users/hpark108/Downloads/Resources (2)/JHAMAC00003-S2R2C1_68efdf9ebe3476695206a195_0_399_2025-11-12_20-08-12"
 ]
 
+
 # Optional scan-point slicing (e.g., slice(0, 255))
 SCAN_SLICE = slice(None)
 
 # Q ranges (same units as input files)
 Q_RANGES: List[Tuple[float, float]] = [
     (29.0, 32.0),
-    (34.0, 36.0),
     (47.0, 51.0),
 ]
 
 # Corresponding Miller indices (h, k, l)
 HKL_RANGES: List[Tuple[int, int, int]] = [
     (1, 1, 1),
-    (2, 0, 0),
     (2, 2, 0),
 ]
 
